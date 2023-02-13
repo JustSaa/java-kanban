@@ -1,9 +1,15 @@
+package model.service;
+
+import model.tasks.Epic;
+import model.tasks.Subtask;
+import model.tasks.Task;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Manager {
     //Для генерации идентификатора
-    private int taskId = 0;
+    private int taskId = 1;
     //Хранение задач
     HashMap<Integer, Task> tasksMap = new HashMap<>();
     HashMap<Integer, Epic> epicsMap = new HashMap<>();
@@ -29,10 +35,12 @@ public class Manager {
         epic.setEpicStatus(subtasksMap);
     }
 
-    //Вывод всех эпиков
+    //Вывод всех эпиков и его подзадач
     public void getAllEpics() {
         for (Integer id : epicsMap.keySet()) {
-            System.out.println(id + " - " + epicsMap.get(id));
+            Epic epic = epicsMap.get(id);
+            System.out.println(id + " - " + epic);
+            getEpicSubtasks(id);
         }
     }
 
@@ -139,6 +147,8 @@ public class Manager {
     public void removeSubtasks(int id) {
         int subtaskEpicId = subtasksMap.get(id).getEpicId();
         subtasksMap.remove(id);
+        Epic epic = epicsMap.get(subtaskEpicId);
+        epic.removeSubtask(id);
         epicsMap.get(subtaskEpicId).setEpicStatus(subtasksMap);
     }
 }
