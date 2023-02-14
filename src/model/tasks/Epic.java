@@ -50,9 +50,7 @@ public class Epic extends Task {
     public void setEpicStatus(HashMap<Integer, Subtask> subs) {
         int isNew = 0;
         int isDone = 0;
-
-        for (int id : getSubtasks()
-        ) {
+        for (int id : getSubtasks()) {
             if (subs.get(id) == null || subs.get(id).status.equals(StateOfTasks.NEW)) {
                 isNew++;
             } else if (subs.get(id).status.equals(StateOfTasks.DONE)) {

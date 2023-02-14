@@ -21,6 +21,10 @@ public class Task {
         this.description = description;
     }
 
+    public String getTitle() {
+        return this.title;
+    }
+
     public StateOfTasks getStatus() {
         return status;
     }
