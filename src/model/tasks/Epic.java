@@ -43,7 +43,8 @@ public class Epic extends Task {
         return "Epic{title='" + this.title
                 + "', description='" + this.description
                 + "', status='" + this.status
-                + "', id='" + this.id + "'";
+                + "', id='" + this.id
+                + "', subtasksId='" + this.subtasks;
     }
 
     public void setEpicStatus(HashMap<Integer, Subtask> subs) {

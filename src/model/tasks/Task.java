@@ -25,10 +25,6 @@ public class Task {
         return status;
     }
 
-    private void setStatus(StateOfTasks status) {
-        this.status = status;
-    }
-
     public int getId() {
         return this.id;
     }

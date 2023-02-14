@@ -21,10 +21,6 @@ public class Subtask extends Task {
                 + "', epicId='" + this.epicId + "'";
     }
 
-    public void setSubtaskStatus(StateOfTasks status) {
-        this.status = status;
-    }
-
     public int getEpicId() {
         return this.epicId;
     }
