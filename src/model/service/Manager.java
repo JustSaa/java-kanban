@@ -56,7 +56,7 @@ public class Manager {
         subtask.setId(generateId());
         subtasksMap.put(subtask.getId(), subtask);
         Epic epic = epicsMap.get(subtask.getEpicId());
-        epic.setSubtasks(subtask);
+        epic.setSubtask(subtask);
         epic.setEpicStatus(subtasksMap);
     }
 
@@ -119,32 +119,64 @@ public class Manager {
         }
     }
 
-    //Обновление задачи
+    //Обновление задачи по сущности
     public void updateTask(Task updateTask) {
         for (Task task : tasksMap.values()) {
-            if (task.getTitle().equals(updateTask.getTitle())) {
-                updateTask.setId(task.getId());
+            if (task.getId() == updateTask.getId()) {
                 tasksMap.put(task.getId(), updateTask);
             }
         }
     }
 
-    //Обновление эпика
-    public void updateEpic(Epic updateEpic) {
-        for (Epic epic : epicsMap.values()) {
-            if (epic.getTitle().equals(updateEpic.getTitle())) {
-                updateEpic.setId(epic.getId());
-                epicsMap.put(epic.getId(), updateEpic);
-                epic.setEpicStatus(subtasksMap);
+    //Обновление задачи по сущности + id
+    public void updateTask(Task updateTask, int id) {
+        for (Task task : tasksMap.values()) {
+            if (task.getId() == id) {
+                updateTask.setId(id);
+                tasksMap.put(id, updateTask);
             }
         }
     }
 
-    //Обновление подзадачи
+    //Обновление эпика по сущности
+    public void updateEpic(Epic updateEpic) {
+        for (Epic epic : epicsMap.values()) {
+            if (epic.getId() == updateEpic.getId()) {
+                updateEpic.setSubtasks(epic.getSubtasks());
+                epicsMap.put(epic.getId(), updateEpic);
+                updateEpic.setEpicStatus(subtasksMap);
+            }
+        }
+    }
+
+    //Обновление эпика по сущности + id
+    public void updateEpic(Epic updateEpic, int id) {
+        for (Epic epic : epicsMap.values()) {
+            if (epic.getId() == id) {
+                updateEpic.setSubtasks(epic.getSubtasks());
+                updateEpic.setId(id);
+                epicsMap.put(id, updateEpic);
+                updateEpic.setEpicStatus(subtasksMap);
+            }
+        }
+    }
+
+    //Обновление подзадачи по сущности
     public void updateSubtask(Subtask updateSubtask) {
         for (Subtask subtask : subtasksMap.values()) {
-            if (subtask.getTitle().equals(updateSubtask.getTitle())) {
-                updateSubtask.setId(subtask.getId());
+            if (subtask.getId() == updateSubtask.getId()) {
+                subtasksMap.put(subtask.getId(), updateSubtask);
+                //Обновление статуса Epic
+                epicsMap.get(updateSubtask.getEpicId()).setEpicStatus(subtasksMap);
+            }
+        }
+    }
+
+    //Обновление подзадачи по сущности + id
+    public void updateSubtask(Subtask updateSubtask, int id) {
+        for (Subtask subtask : subtasksMap.values()) {
+            if (subtask.getId() == id) {
+                updateSubtask.setId(id);
                 subtasksMap.put(subtask.getId(), updateSubtask);
                 epicsMap.get(updateSubtask.getEpicId()).setEpicStatus(subtasksMap);
             }
@@ -181,6 +213,7 @@ public class Manager {
             subtasksMap.remove(id);
             Epic epic = epicsMap.get(subtaskEpicId);
             epic.removeSubtask(id);
+            //Обнвление статуса
             epicsMap.get(subtaskEpicId).setEpicStatus(subtasksMap);
         } else {
             System.out.println("Такой подзадачи нет");

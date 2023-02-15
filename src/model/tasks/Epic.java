@@ -22,7 +22,11 @@ public class Epic extends Task {
         return subtasks;
     }
 
-    public void setSubtasks(Subtask subtask) {
+    public void setSubtasks(ArrayList<Integer> subtasks) {
+        this.subtasks = subtasks;
+    }
+
+    public void setSubtask(Subtask subtask) {
         this.subtasks.add(subtask.id);
     }
 
