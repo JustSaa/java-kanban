@@ -5,7 +5,6 @@ import model.service.historyManager.HistoryManager;
 import model.tasks.Epic;
 import model.tasks.Subtask;
 import model.tasks.Task;
-import model.service.historyManager.InMemoryHistoryManager;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -30,10 +29,8 @@ public class InMemoryTaskManager implements TaskManager {
 
     //Вывод всех задач
     @Override
-    public void getAllTasks() {
-        for (Integer id : tasksMap.keySet()) {
-            System.out.println(id + " - " + tasksMap.get(id));
-        }
+    public HashMap<Integer, Task> getAllTasks() {
+        return this.tasksMap;
     }
 
     //Создание эпика
@@ -46,20 +43,14 @@ public class InMemoryTaskManager implements TaskManager {
 
     //Вывод всех эпиков и его подзадач
     @Override
-    public void getAllEpics() {
-        for (Integer id : epicsMap.keySet()) {
-            Epic epic = epicsMap.get(id);
-            System.out.println(id + " - " + epic);
-            getEpicSubtasks(id);
-        }
+    public HashMap<Integer, Epic> getAllEpics() {
+        return this.epicsMap;
     }
 
     //Вывод всех подзадач
     @Override
-    public void getAllSubtasks() {
-        for (Integer id : subtasksMap.keySet()) {
-            System.out.println(id + " - " + subtasksMap.get(id));
-        }
+    public HashMap<Integer, Subtask> getAllSubtasks() {
+        return this.subtasksMap;
     }
 
     //Создание подзадачи
@@ -98,50 +89,56 @@ public class InMemoryTaskManager implements TaskManager {
 
     //Получение задачи по идентификатору
     @Override
-    public void getTask(int id) {
+    public Task getTask(int id) {
         if (tasksMap.get(id) != null) {
-            System.out.println(tasksMap.get(id));
             //Добавление задачи в историю при просмотре
             historyManager.addTaskToHistory(tasksMap.get(id));
+            return this.tasksMap.get(id);
         } else {
             System.out.println("Такой задачи нет");
+            return null;
         }
     }
 
     //Получение эпика по идентификатору
     @Override
-    public void getEpic(int id) {
+    public Epic getEpic(int id) {
         if (epicsMap.get(id) != null) {
-            System.out.println(epicsMap.get(id));
             //Добавление задачи в историю при просмотре
             historyManager.addTaskToHistory(epicsMap.get(id));
+            return this.epicsMap.get(id);
         } else {
             System.out.println("Такого эпика - задачи нет");
+            return null;
         }
     }
 
     //Получение подзадачи по идентификатору
     @Override
-    public void getSubtask(int id) {
+    public Subtask getSubtask(int id) {
         if (subtasksMap.get(id) != null) {
-            System.out.println(subtasksMap.get(id));
             //Добавление задачи в историю при просмотре
             historyManager.addTaskToHistory(subtasksMap.get(id));
+            return this.subtasksMap.get(id);
         } else {
             System.out.println("Такого подзадачи - нет");
+            return null;
         }
     }
 
     //Получение всех подзадач по идентификатору эпика
     @Override
-    public void getEpicSubtasks(int id) {
-        ArrayList<Integer> epicsSubs = epicsMap.get(id).getSubtasks();
-        if (epicsSubs == null) {
+    public HashMap<Integer, Subtask> getEpicSubtasks(int id) {
+        ArrayList<Integer> epicSubsId = epicsMap.get(id).getSubtasks();
+        HashMap<Integer, Subtask> epicSubs = new HashMap<>();
+        if (epicSubsId == null) {
             System.out.println("Список подзадач пуст");
+            return null;
         } else {
-            for (int idSubs : epicsSubs) {
-                System.out.println(subtasksMap.get(idSubs));
+            for (int idSubs : epicSubsId) {
+                epicSubs.put(idSubs, subtasksMap.get(idSubs));
             }
+            return epicSubs;
         }
     }
 

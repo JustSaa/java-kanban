@@ -75,11 +75,16 @@ public class Epic extends Task {
         if (this == obj) return true;
         if (obj == null || this.getClass() != obj.getClass()) return false;
         Epic epic = (Epic) obj;
-        return Objects.equals(this.subtasks, epic.subtasks);
+        return (Objects.equals(this.subtasks, epic.subtasks)
+                && Objects.equals(this.id, epic.id)
+                && Objects.equals(this.title, epic.title)
+                && Objects.equals(this.description, epic.description)
+                && Objects.equals(this.status, epic.status));
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(this.subtasks);
+        return Objects.hash(this.subtasks, this.id, this.title, this.description, this.status);
     }
+
 }

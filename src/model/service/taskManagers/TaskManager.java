@@ -4,6 +4,7 @@ import model.tasks.Epic;
 import model.tasks.Subtask;
 import model.tasks.Task;
 
+import java.util.HashMap;
 import java.util.List;
 
 public interface TaskManager {
@@ -12,16 +13,16 @@ public interface TaskManager {
     void createTask(Task task);
 
     //Вывод всех задач
-    void getAllTasks();
+    HashMap<Integer, Task> getAllTasks();
 
     //Создание эпика
     void createEpic(Epic epic);
 
     //Вывод всех эпиков и его подзадач
-    void getAllEpics();
+    HashMap<Integer, Epic> getAllEpics();
 
     //Вывод всех подзадач
-    void getAllSubtasks();
+    HashMap<Integer, Subtask> getAllSubtasks();
 
     //Создание подзадачи
     void createSubtask(Subtask subtask);
@@ -39,16 +40,16 @@ public interface TaskManager {
     int generateId();
 
     //Получение задачи по идентификатору
-    void getTask(int id);
+    Task getTask(int id);
 
     //Получение эпика по идентификатору
-    void getEpic(int id);
+    Epic getEpic(int id);
 
     //Получение подзадачи по идентификатору
-    void getSubtask(int id);
+    Subtask getSubtask(int id);
 
     //Получение всех подзадач по идентификатору эпика
-    void getEpicSubtasks(int id);
+    HashMap<Integer, Subtask> getEpicSubtasks(int id);
 
     //Обновление задачи по сущности
     void updateTask(Task updateTask);
