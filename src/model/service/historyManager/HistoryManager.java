@@ -1,6 +1,6 @@
 package model.service.historyManager;
 
-import model.tasks.Task;
+import model.model.Task;
 
 import java.util.List;
 
@@ -14,4 +14,7 @@ public interface HistoryManager {
 
     //Очистка истории
     void clearHistory();
+
+    //Удаление задачи из просмотра
+    void remove(int id);
 }

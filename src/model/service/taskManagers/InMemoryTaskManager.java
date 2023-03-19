@@ -2,9 +2,9 @@ package model.service.taskManagers;
 
 import model.service.Managers;
 import model.service.historyManager.HistoryManager;
-import model.tasks.Epic;
-import model.tasks.Subtask;
-import model.tasks.Task;
+import model.model.Epic;
+import model.model.Subtask;
+import model.model.Task;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -137,6 +137,7 @@ public class InMemoryTaskManager implements TaskManager {
         } else {
             for (int idSubs : epicSubsId) {
                 epicSubs.put(idSubs, subtasksMap.get(idSubs));
+                historyManager.addTaskToHistory(subtasksMap.get(idSubs));
             }
             return epicSubs;
         }
@@ -217,6 +218,7 @@ public class InMemoryTaskManager implements TaskManager {
     public void removeTask(int id) {
         if (tasksMap.get(id) != null) {
             tasksMap.remove(id);
+            historyManager.remove(id);
         } else {
             System.out.println("Такой задачи нет");
         }
@@ -230,8 +232,10 @@ public class InMemoryTaskManager implements TaskManager {
             ArrayList<Integer> epicSubtasks = epicToRemove.getSubtasks();
             for (int idSub : epicSubtasks) {
                 subtasksMap.remove(idSub);
+                historyManager.remove(idSub);
             }
             epicsMap.remove(id);
+            historyManager.remove(id);
         } else {
             System.out.println("Такого эпика в задачах нет");
         }
@@ -243,6 +247,7 @@ public class InMemoryTaskManager implements TaskManager {
         if (subtasksMap.get(id) != null) {
             int subtaskEpicId = subtasksMap.get(id).getEpicId();
             subtasksMap.remove(id);
+            historyManager.remove(id);
             Epic epic = epicsMap.get(subtaskEpicId);
             epic.removeSubtask(id);
             //Обнвление статуса

@@ -1,38 +1,48 @@
 package model.service.historyManager;
 
-import model.tasks.Task;
+import model.model.Task;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class InMemoryHistoryManager implements HistoryManager {
 
-    private List<Task> historyOfTasks;
+    private final CustomLinkedList<Task> historyOfQuery;
+    private final Map<Integer, Node<Task>> historyOfTasks;
 
     public InMemoryHistoryManager() {
-        this.historyOfTasks = new ArrayList<>();
+        this.historyOfQuery = new CustomLinkedList<>();
+        this.historyOfTasks = new HashMap<>();
     }
 
     //Получение истории просмотров
     @Override
     public List<Task> getHistory() {
-        return this.historyOfTasks;
+        return this.historyOfQuery.getTasks();
     }
 
     //Добавление задачи в историю
     @Override
     public void addTaskToHistory(Task anyTask) {
-        if (historyOfTasks.size() > 9) {
-            historyOfTasks.remove(0);
-            historyOfTasks.add(anyTask);
-        } else {
-            historyOfTasks.add(anyTask);
+        Node<Task> node = historyOfQuery.linkLast(anyTask);
+        int idTask = anyTask.getId();
+        if (historyOfTasks.containsKey(idTask)) {
+            historyOfQuery.removeNode(historyOfTasks.get(idTask));
         }
+        historyOfTasks.put(idTask, node);
     }
 
     //Очистка истории
     @Override
     public void clearHistory() {
         historyOfTasks.clear();
+    }
+
+    @Override
+    public void remove(int id) {
+        historyOfQuery.removeNode(historyOfTasks.get(id));
+        historyOfTasks.remove(id);
     }
 }

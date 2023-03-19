@@ -1,8 +1,8 @@
 package model.service.taskManagers;
 
-import model.tasks.Epic;
-import model.tasks.Subtask;
-import model.tasks.Task;
+import model.model.Epic;
+import model.model.Subtask;
+import model.model.Task;
 
 import java.util.HashMap;
 import java.util.List;

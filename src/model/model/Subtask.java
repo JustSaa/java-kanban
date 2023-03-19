@@ -1,4 +1,4 @@
-package model.tasks;
+package model.model;
 
 import model.enums.StateOfTasks;
 
