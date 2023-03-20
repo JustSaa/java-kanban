@@ -1,13 +1,13 @@
 package model.model;
 
-import model.enums.StateOfTasks;
+import model.enums.Status;
 
 import java.util.Objects;
 
 public class Subtask extends Task {
     private int epicId;
 
-    public Subtask(String title, String description, StateOfTasks status, int epicId) {
+    public Subtask(String title, String description, Status status, int epicId) {
         super(title, description, status);
         this.epicId = epicId;
     }

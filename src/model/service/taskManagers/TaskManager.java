@@ -13,16 +13,16 @@ public interface TaskManager {
     void createTask(Task task);
 
     //Вывод всех задач
-    HashMap<Integer, Task> getAllTasks();
+    List<Task> getAllTasks();
 
     //Создание эпика
     void createEpic(Epic epic);
 
     //Вывод всех эпиков и его подзадач
-    HashMap<Integer, Epic> getAllEpics();
+    List<Epic> getAllEpics();
 
     //Вывод всех подзадач
-    HashMap<Integer, Subtask> getAllSubtasks();
+    List<Subtask> getAllSubtasks();
 
     //Создание подзадачи
     void createSubtask(Subtask subtask);
@@ -36,9 +36,6 @@ public interface TaskManager {
     //Удаление все подзадач
     void deleteAllSubtasks();
 
-    //Генерация идентификатора
-    int generateId();
-
     //Получение задачи по идентификатору
     Task getTask(int id);
 
@@ -49,7 +46,7 @@ public interface TaskManager {
     Subtask getSubtask(int id);
 
     //Получение всех подзадач по идентификатору эпика
-    HashMap<Integer, Subtask> getEpicSubtasks(int id);
+    List<Subtask> getEpicSubtasks(int id);
 
     //Обновление задачи по сущности
     void updateTask(Task updateTask);

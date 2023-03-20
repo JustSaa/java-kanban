@@ -1,16 +1,14 @@
 package model.model;
 
-import model.enums.StateOfTasks;
-
+import model.enums.Status;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Objects;
 
 public class Epic extends Task {
     private ArrayList<Integer> subtasks = new ArrayList<>();
 
-    public Epic(String title, String description, StateOfTasks status) {
+    public Epic(String title, String description, Status status) {
         super(title, description, status);
     }
 
@@ -51,24 +49,6 @@ public class Epic extends Task {
                 + "', subtasksId='" + this.subtasks;
     }
 
-    public void setEpicStatus(HashMap<Integer, Subtask> subs) {
-        int isNew = 0;
-        int isDone = 0;
-        for (int id : getSubtasks()) {
-            if (subs.get(id) == null || subs.get(id).status.equals(StateOfTasks.NEW)) {
-                isNew++;
-            } else if (subs.get(id).status.equals(StateOfTasks.DONE)) {
-                isDone++;
-            }
-        }
-        if (subtasks.size() == isNew) {
-            this.status = StateOfTasks.NEW;
-        } else if (subtasks.size() == isDone) {
-            this.status = StateOfTasks.DONE;
-        } else {
-            this.status = StateOfTasks.IN_PROGRESS;
-        }
-    }
 
     @Override
     public boolean equals(Object obj) {

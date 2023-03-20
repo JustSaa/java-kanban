@@ -1,16 +1,16 @@
 package model.model;
 
-import model.enums.StateOfTasks;
+import model.enums.Status;
 
 import java.util.Objects;
 
 public class Task {
     protected String title;
     protected String description;
-    protected StateOfTasks status;
+    protected Status status;
     protected int id;
 
-    public Task(String title, String description, StateOfTasks status) {
+    public Task(String title, String description, Status status) {
         this.title = title;
         this.description = description;
         this.status = status;
@@ -25,8 +25,12 @@ public class Task {
         return this.title;
     }
 
-    public StateOfTasks getStatus() {
+    public Status getStatus() {
         return status;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
     }
 
     public int getId() {

@@ -1,6 +1,6 @@
 package model.enums;
 
-public enum StateOfTasks {
+public enum Status {
     NEW,
     DONE,
     IN_PROGRESS
