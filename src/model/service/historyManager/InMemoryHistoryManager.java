@@ -12,9 +12,10 @@ public class InMemoryHistoryManager implements HistoryManager {
 
     //Добавление задачи в историю
     @Override
-    public void addTaskToHistory(Task anyTask) {
-        Node<Task> node = linkLast(anyTask);
-        int idTask = anyTask.getId();
+    public void addToHistory(Task task) {
+        Node<Task> node = linkLast(task);
+        int idTask;
+        idTask = task.getId();
         if (historyOfTasks.containsKey(idTask)) {
             removeNode(historyOfTasks.get(idTask));
         }

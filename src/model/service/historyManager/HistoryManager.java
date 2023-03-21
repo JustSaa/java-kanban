@@ -10,7 +10,7 @@ public interface HistoryManager {
     List<Task> getHistory();
 
     //Добавление задачи в историю
-    void addTaskToHistory(Task anyTask);
+    void addToHistory(Task task);
 
     //Очистка истории
     void clearHistory();

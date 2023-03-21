@@ -13,28 +13,28 @@ public interface TaskManager {
     void createTask(Task task);
 
     //Вывод всех задач
-    List<Task> getAllTasks();
+    List<Task> getTasks();
 
     //Создание эпика
     void createEpic(Epic epic);
 
     //Вывод всех эпиков и его подзадач
-    List<Epic> getAllEpics();
+    List<Epic> getEpics();
 
     //Вывод всех подзадач
-    List<Subtask> getAllSubtasks();
+    List<Subtask> getSubtasks();
 
     //Создание подзадачи
     void createSubtask(Subtask subtask);
 
     //Удаление всех задач
-    void deleteAllTasks();
+    void deleteTasks();
 
     //Удаление всех эпиков
-    void deleteAllEpics();
+    void deleteEpics();
 
     //Удаление все подзадач
-    void deleteAllSubtasks();
+    void deleteSubtasks();
 
     //Получение задачи по идентификатору
     Task getTask(int id);
@@ -51,20 +51,11 @@ public interface TaskManager {
     //Обновление задачи по сущности
     void updateTask(Task updateTask);
 
-    //Обновление задачи по сущности + id
-    void updateTask(Task updateTask, int id);
-
     //Обновление эпика по сущности
     void updateEpic(Epic updateEpic);
 
-    //Обновление эпика по сущности + id
-    void updateEpic(Epic updateEpic, int id);
-
     //Обновление подзадачи по сущности
     void updateSubtask(Subtask updateSubtask);
-
-    //Обновление подзадачи по сущности + id
-    void updateSubtask(Subtask updateSubtask, int id);
 
     //Удаление задачи по идентификатору
     void removeTask(int id);
