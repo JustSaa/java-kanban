@@ -5,7 +5,7 @@ import model.enums.Status;
 import java.util.Objects;
 
 public class Subtask extends Task {
-    private int epicId;
+    private final int epicId;
 
     public Subtask(String title, String description, Status status, int epicId) {
         super(title, description, status);

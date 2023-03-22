@@ -84,7 +84,7 @@ public class InMemoryTaskManager implements TaskManager {
 
     //Генерация идентификатора
     private int generateId() {
-        return InMemoryTaskManager.taskId++;
+        return taskId++;
     }
 
     //Получение задачи по идентификатору
@@ -93,7 +93,7 @@ public class InMemoryTaskManager implements TaskManager {
         if (tasksMap.get(id) != null) {
             //Добавление задачи в историю при просмотре
             historyManager.addToHistory(tasksMap.get(id));
-            return this.tasksMap.get(id);
+            return tasksMap.get(id);
         } else {
             System.out.println("Такой задачи нет");
             return null;
@@ -106,7 +106,7 @@ public class InMemoryTaskManager implements TaskManager {
         if (epicsMap.get(id) != null) {
             //Добавление задачи в историю при просмотре
             historyManager.addToHistory(epicsMap.get(id));
-            return this.epicsMap.get(id);
+            return epicsMap.get(id);
         } else {
             System.out.println("Такого эпика - задачи нет");
             return null;
@@ -119,7 +119,7 @@ public class InMemoryTaskManager implements TaskManager {
         if (subtasksMap.get(id) != null) {
             //Добавление задачи в историю при просмотре
             historyManager.addToHistory(subtasksMap.get(id));
-            return this.subtasksMap.get(id);
+            return subtasksMap.get(id);
         } else {
             System.out.println("Такого подзадачи - нет");
             return null;
@@ -131,6 +131,7 @@ public class InMemoryTaskManager implements TaskManager {
     public List<Subtask> getEpicSubtasks(int id) {
         ArrayList<Integer> epicSubsId = epicsMap.get(id).getSubtasks();
         List<Subtask> epicSubs = new ArrayList<>();
+
         if (epicSubsId == null) {
             System.out.println("Список подзадач пуст");
             return null;
@@ -214,7 +215,7 @@ public class InMemoryTaskManager implements TaskManager {
             historyManager.remove(id);
             Epic epic = epicsMap.get(subtaskEpicId);
             epic.removeSubtask(id);
-            //Обнвление статуса
+            //Обновление статуса
             setEpicStatus(epic);
         } else {
             System.out.println("Такой подзадачи нет");
@@ -229,6 +230,7 @@ public class InMemoryTaskManager implements TaskManager {
     private void setEpicStatus(Epic epic) {
         int isNew = 0;
         int isDone = 0;
+
         for (int id : epic.getSubtasks()) {
             if (subtasksMap.get(id) == null || subtasksMap.get(id).getStatus().equals(Status.NEW)) {
                 isNew++;
@@ -244,5 +246,4 @@ public class InMemoryTaskManager implements TaskManager {
             epic.setStatus(Status.IN_PROGRESS);
         }
     }
-
 }

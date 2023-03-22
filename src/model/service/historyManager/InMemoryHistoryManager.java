@@ -13,13 +13,16 @@ public class InMemoryHistoryManager implements HistoryManager {
     //Добавление задачи в историю
     @Override
     public void addToHistory(Task task) {
-        Node<Task> node = linkLast(task);
-        int idTask;
-        idTask = task.getId();
-        if (historyOfTasks.containsKey(idTask)) {
-            removeNode(historyOfTasks.get(idTask));
+        if (task == null) {
+            return;
         }
-        historyOfTasks.put(idTask, node);
+        final int id = task.getId();
+
+        if (historyOfTasks.containsKey(id)) {
+            removeNode(historyOfTasks.get(id));
+        }
+        linkLast(task);
+        historyOfTasks.put(id, last);
     }
 
     //Очистка истории
@@ -35,15 +38,15 @@ public class InMemoryHistoryManager implements HistoryManager {
     }
 
     //Реализация для своего LinkedList
-    public Node<Task> linkLast(Task someTask) {
+    public void linkLast(Task someTask) {
         Node<Task> newNode = new Node<>(someTask, last, null);
+
         if (last == null) {
             first = newNode;
         } else {
             last.next = newNode;
         }
         last = newNode;
-        return newNode;
     }
 
     //Получение истории просмотров
@@ -51,6 +54,7 @@ public class InMemoryHistoryManager implements HistoryManager {
     public List<Task> getHistory() {
         List<Task> history = new ArrayList<>();
         Node<Task> nodeTask = first;
+
         while (nodeTask != null) {
             history.add(nodeTask.item);
             nodeTask = nodeTask.next;
