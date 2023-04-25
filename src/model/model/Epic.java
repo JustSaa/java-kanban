@@ -1,6 +1,7 @@
 package model.model;
 
 import model.enums.Status;
+import model.enums.TaskType;
 
 import java.util.ArrayList;
 import java.util.Objects;
@@ -8,8 +9,14 @@ import java.util.Objects;
 public class Epic extends Task {
     private ArrayList<Integer> subtasks = new ArrayList<>();
 
-    public Epic(String title, String description, Status status) {
-        super(title, description, status);
+    public Epic(String title, Status status, String description) {
+        super(title, status, description);
+        this.type = TaskType.EPIC;
+    }
+
+    public Epic(int id, String title, Status status, String description) {
+        super(id, title, status, description);
+        this.type = TaskType.EPIC;
     }
 
     public Epic(String title, String description) {
@@ -42,11 +49,11 @@ public class Epic extends Task {
 
     @Override
     public String toString() {
-        return "Epic{title='" + this.title
-                + "', description='" + this.description
-                + "', status='" + this.status
-                + "', id='" + this.id
-                + "', subtasksId='" + this.subtasks;
+        return this.id + ","
+                + this.type + ","
+                + this.title + ","
+                + this.status + ","
+                + this.description;
     }
 
 
@@ -59,12 +66,13 @@ public class Epic extends Task {
                 && Objects.equals(this.id, epic.id)
                 && Objects.equals(this.title, epic.title)
                 && Objects.equals(this.description, epic.description)
-                && Objects.equals(this.status, epic.status));
+                && Objects.equals(this.status, epic.status)
+                && Objects.equals(this.type, epic.type));
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(this.subtasks, this.id, this.title, this.description, this.status);
+        return Objects.hash(this.subtasks, this.id, this.title, this.description, this.status, this.type);
     }
 
 }

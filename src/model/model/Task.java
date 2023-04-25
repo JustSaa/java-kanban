@@ -1,6 +1,7 @@
 package model.model;
 
 import model.enums.Status;
+import model.enums.TaskType;
 
 import java.util.Objects;
 
@@ -10,10 +11,21 @@ public class Task {
     protected Status status;
     protected int id;
 
-    public Task(String title, String description, Status status) {
+    protected TaskType type;
+
+    public Task(String title, Status status, String description) {
         this.title = title;
         this.description = description;
         this.status = status;
+        this.type = TaskType.TASK;
+    }
+
+    public Task(int id, String title, Status status, String description) {
+        this.id = id;
+        this.title = title;
+        this.description = description;
+        this.status = status;
+        this.type = TaskType.TASK;
     }
 
     public Task(String title, String description) {
@@ -33,6 +45,10 @@ public class Task {
         this.status = status;
     }
 
+    public TaskType getType() {
+        return this.type;
+    }
+
     public int getId() {
         return this.id;
     }
@@ -43,10 +59,11 @@ public class Task {
 
     @Override
     public String toString() {
-        return "Task{title='" + this.title
-                + "', description='" + this.description
-                + "', status='" + this.status
-                + "', id='" + this.id + "'";
+        return this.id + ","
+                + this.type + ","
+                + this.title + ","
+                + this.status + ","
+                + this.description;
     }
 
     @Override
@@ -57,11 +74,12 @@ public class Task {
         return (Objects.equals(this.id, task.id)
                 && Objects.equals(this.title, task.title)
                 && Objects.equals(this.description, task.description)
-                && Objects.equals(this.status, task.status));
+                && Objects.equals(this.status, task.status)
+                && Objects.equals(this.type, task.type));
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(this.id, this.title, this.description, this.status);
+        return Objects.hash(this.id, this.title, this.description, this.status, this.type);
     }
 }

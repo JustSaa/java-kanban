@@ -19,7 +19,7 @@ public class InMemoryTaskManager implements TaskManager {
     private final HashMap<Integer, Epic> epicsMap = new HashMap<>();
     private final HashMap<Integer, Subtask> subtasksMap = new HashMap<>();
 
-    private final HistoryManager historyManager = Managers.getDefaultHistory();
+    protected final HistoryManager historyManager = Managers.getDefaultHistory();
 
     //Создание задачи
     @Override
