@@ -3,6 +3,7 @@ package model.service.taskManagers;
 import model.model.Epic;
 import model.model.Subtask;
 import model.model.Task;
+import model.service.historyManager.HistoryManager;
 
 import java.util.HashMap;
 import java.util.List;
@@ -68,4 +69,6 @@ public interface TaskManager {
 
     // Получение истории
     List<Task> getHistory();
+
+    HistoryManager getHistoryManager();
 }

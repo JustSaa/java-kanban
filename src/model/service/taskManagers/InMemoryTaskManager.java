@@ -226,6 +226,10 @@ public class InMemoryTaskManager implements TaskManager {
         return historyManager.getHistory();
     }
 
+    public HistoryManager getHistoryManager(){
+        return this.historyManager;
+    }
+
     //Присвоение статуса задаче
     private void setEpicStatus(Epic epic) {
         int isNew = 0;

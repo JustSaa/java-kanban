@@ -6,6 +6,7 @@ import model.service.taskManagers.FileBackedTasksManager;
 import model.service.taskManagers.TaskManager;
 import model.model.Epic;
 
+import java.io.File;
 import java.nio.file.Path;
 
 public class Main {
@@ -30,8 +31,8 @@ public class Main {
 //        m.getEpic(3);
 
 
-        TaskManager m = FileBackedTasksManager.load(Path.of("src/resources/results.csv"));
-        System.out.println(m.getHistory());
+      TaskManager m = FileBackedTasksManager.load(new File("src/resources/task.csv"));
+      System.out.println(m.getHistory());
 
     }
 }
