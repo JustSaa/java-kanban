@@ -69,6 +69,4 @@ public interface TaskManager {
 
     // Получение истории
     List<Task> getHistory();
-
-    HistoryManager getHistoryManager();
 }

@@ -6,23 +6,13 @@ import model.model.Subtask;
 import model.model.Task;
 import model.service.taskManagers.exeptions.ManagerSaveException;
 import model.utils.Converter;
-import model.service.Managers;
-import model.service.historyManager.InMemoryHistoryManager;
 
 import java.io.*;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.*;
 
 public class FileBackedTasksManager extends InMemoryTaskManager {
-    private static final String FILE_NAME = "task.csv";
-    //Получение файла
-    private static final Path filePath = Path.of("src/resources/" + FILE_NAME);
-    private File file;
-
-    public FileBackedTasksManager() {
-        file = filePath.toFile();
-    }
+    private final File file;
 
     public FileBackedTasksManager(File file) {
         this.file = file;
@@ -31,16 +21,13 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
 
     //Сохранение в файл
     protected void save() {
-        try (BufferedWriter bw = new BufferedWriter(new FileWriter(file));
-             BufferedReader br = new BufferedReader(new FileReader(file))) {
-
-            if (br.readLine() == null) {
-                String header = "id,type,name,status,description,epicId" + "\n";
-                bw.write(header);
-            }
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(file))) {
+            String header = "id,type,name,status,description,epicId" + "\n";
             String values = Converter.toString(this)
                     + "\n"
                     + Converter.historyToString(historyManager);
+
+            bw.write(header);
             bw.write(values);
         } catch (IOException e) {
             throw new ManagerSaveException("Ошибка записи в файл");
@@ -49,12 +36,12 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
 
     // Загрузка из файла
     public static TaskManager load(File file) {
-        TaskManager fileBackedTasksManager = new FileBackedTasksManager(file);
+        FileBackedTasksManager fileBackedTasksManager = new FileBackedTasksManager(file);
         boolean itsDelimiter = false;
         List<Integer> history;
         Map<Integer, Task> mapForHistory = new HashMap<>();
         try {
-            String fileName = Files.readString(filePath);
+            String fileName = Files.readString(file.toPath());
             String[] lines = fileName.split("\n");
 
             for (int i = 1; i < lines.length; i++) {
@@ -87,12 +74,12 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
                     for (Integer id : history) {
                         Task task = mapForHistory.get(id);
                         switch (task.getType()) {
-                            case TASK -> fileBackedTasksManager.getHistoryManager().
-                                    addToHistory(fileBackedTasksManager.getTask(id));
-                            case EPIC -> fileBackedTasksManager.getHistoryManager().
-                                    addToHistory(fileBackedTasksManager.getEpic(id));
-                            case SUBTASK -> fileBackedTasksManager.getHistoryManager().
-                                    addToHistory(fileBackedTasksManager.getSubtask(id));
+                            case TASK -> fileBackedTasksManager.historyManager
+                                    .addToHistory(fileBackedTasksManager.getTask(id));
+                            case EPIC -> fileBackedTasksManager.historyManager
+                                    .addToHistory(fileBackedTasksManager.getEpic(id));
+                            case SUBTASK -> fileBackedTasksManager.historyManager
+                                    .addToHistory(fileBackedTasksManager.getSubtask(id));
                         }
                     }
                 }
