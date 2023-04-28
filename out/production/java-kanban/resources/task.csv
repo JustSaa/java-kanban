@@ -7,4 +7,4 @@ id,type,name,status,description,epicId
 6,SUBTASK,Subtask02,DONE,subId02,3,SUBTASK
 7,SUBTASK,Subtask03,DONE,subId03,3,SUBTASK
 
-2,3
+2,3,3
