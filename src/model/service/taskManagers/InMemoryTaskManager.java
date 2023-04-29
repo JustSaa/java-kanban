@@ -15,9 +15,9 @@ public class InMemoryTaskManager implements TaskManager {
     //Для генерации идентификатора
     private static int taskId = 1;
     //Хранение задач
-    private final HashMap<Integer, Task> tasksMap = new HashMap<>();
-    private final HashMap<Integer, Epic> epicsMap = new HashMap<>();
-    private final HashMap<Integer, Subtask> subtasksMap = new HashMap<>();
+    protected final HashMap<Integer, Task> tasksMap = new HashMap<>();
+    protected final HashMap<Integer, Epic> epicsMap = new HashMap<>();
+    protected final HashMap<Integer, Subtask> subtasksMap = new HashMap<>();
 
     protected final HistoryManager historyManager = Managers.getDefaultHistory();
 

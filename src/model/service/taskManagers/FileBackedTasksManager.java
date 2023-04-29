@@ -55,17 +55,17 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
 
                     switch (type) {
                         case TASK -> {
-                            fileBackedTasksManager.createTask(task);
+                            fileBackedTasksManager.tasksMap.put(task.getId(), task);
                             mapForHistory.put(task.getId(), task);
                         }
                         case EPIC -> {
                             Epic epic = (Epic) task;
-                            fileBackedTasksManager.createEpic(epic);
+                            fileBackedTasksManager.epicsMap.put(task.getId(), epic);
                             mapForHistory.put(epic.getId(), epic);
                         }
                         case SUBTASK -> {
                             Subtask subtask = (Subtask) task;
-                            fileBackedTasksManager.createSubtask(subtask);
+                            fileBackedTasksManager.subtasksMap.put(task.getId(), subtask);
                             mapForHistory.put(subtask.getId(), subtask);
                         }
                     }
@@ -74,12 +74,8 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
                     for (Integer id : history) {
                         Task task = mapForHistory.get(id);
                         switch (task.getType()) {
-                            case TASK -> fileBackedTasksManager.historyManager
-                                    .addToHistory(fileBackedTasksManager.getTask(id));
-                            case EPIC -> fileBackedTasksManager.historyManager
-                                    .addToHistory(fileBackedTasksManager.getEpic(id));
-                            case SUBTASK -> fileBackedTasksManager.historyManager
-                                    .addToHistory(fileBackedTasksManager.getSubtask(id));
+                            case TASK, SUBTASK, EPIC -> fileBackedTasksManager.historyManager
+                                    .addToHistory(task);
                         }
                     }
                 }
