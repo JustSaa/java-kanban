@@ -1,11 +1,10 @@
 id,type,name,status,description,epicId
+1,TASK,A,NEW,First
 2,TASK,B,NEW,Second
 8,TASK,Задача,NEW,Описание
-3,EPIC,Epic01,IN_PROGRESS,For test
+10,TASK,Задача,NEW,Описание
+11,TASK,Задача,NEW,Описание
 4,EPIC,Epic02,NEW,For test02
 9,EPIC,Epic Task,NEW,Описание
-5,SUBTASK,Subtask01,IN_PROGRESS,subId01,3,SUBTASK
-6,SUBTASK,Subtask02,DONE,subId02,3,SUBTASK
-7,SUBTASK,Subtask03,DONE,subId03,3,SUBTASK
 
-2,3,
+1,2,

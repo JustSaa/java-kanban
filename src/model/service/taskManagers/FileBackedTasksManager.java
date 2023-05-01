@@ -40,6 +40,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
         boolean itsDelimiter = false;
         List<Integer> history;
         Map<Integer, Task> mapForHistory = new HashMap<>();
+        int initId=0;
         try {
             String fileName = Files.readString(file.toPath());
             String[] lines = fileName.split("\n");
@@ -52,6 +53,10 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
                 if (!itsDelimiter) {
                     Task task = Converter.fromString(lines[i]);
                     TaskType type = TaskType.valueOf(lines[i].split(",")[1]);
+                    //Получение самого большого id
+                    if (task.getId()>initId) {
+                        initId=task.getId();
+                    }
 
                     switch (type) {
                         case TASK -> {
@@ -80,6 +85,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
                     }
                 }
             }
+            taskId=initId+1;
         } catch (IOException e) {
             throw new ManagerSaveException("Ошибка загрузки из файла");
         }

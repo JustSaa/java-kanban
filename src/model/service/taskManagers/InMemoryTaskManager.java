@@ -13,7 +13,7 @@ import java.util.List;
 
 public class InMemoryTaskManager implements TaskManager {
     //Для генерации идентификатора
-    private static int taskId = 1;
+    protected static int taskId = 1;
     //Хранение задач
     protected final HashMap<Integer, Task> tasksMap = new HashMap<>();
     protected final HashMap<Integer, Epic> epicsMap = new HashMap<>();
@@ -67,18 +67,31 @@ public class InMemoryTaskManager implements TaskManager {
     //Удаление всех задач
     @Override
     public void deleteTasks() {
+        for (Integer idTasks : tasksMap.keySet()) {
+            historyManager.remove(idTasks);
+        }
         tasksMap.clear();
     }
 
     //Удаление всех эпиков
     @Override
     public void deleteEpics() {
+        for (Integer idSub : subtasksMap.keySet()) {
+            historyManager.remove(idSub);
+        }
+        for (Integer idEpics : epicsMap.keySet()) {
+            historyManager.remove(idEpics);
+        }
         epicsMap.clear();
+        subtasksMap.clear();
     }
 
     //Удаление все подзадач
     @Override
     public void deleteSubtasks() {
+        for (Integer idSubtasks : subtasksMap.keySet()) {
+            historyManager.remove(idSubtasks);
+        }
         subtasksMap.clear();
     }
 
