@@ -85,7 +85,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
                     }
                 }
             }
-            taskId=initId+1;
+            taskId=++initId;
         } catch (IOException e) {
             throw new ManagerSaveException("Ошибка загрузки из файла");
         }

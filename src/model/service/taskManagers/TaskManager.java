@@ -5,8 +5,10 @@ import model.model.Subtask;
 import model.model.Task;
 import model.service.historyManager.HistoryManager;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.TreeSet;
 
 public interface TaskManager {
 
@@ -69,4 +71,6 @@ public interface TaskManager {
 
     // Получение истории
     List<Task> getHistory();
+
+    TreeSet<Task> getListOfTasksSortedByTime();
 }

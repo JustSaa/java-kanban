@@ -32,16 +32,19 @@ public class Main {
        m.getSubtask(5);
         m.getSubtask(6);
         m.createTask(new Task("Задача","Описание"));
-        m.createTask(new Epic("Epic Task","Описание"));
+        //m.createTask(new Epic("Epic Task","Описание"));
 
 m.removeEpic(3);
-       // m.deleteEpics();
+        //m.deleteEpics();
+        //m.deleteTasks();
+        //m.deleteSubtasks();
+        m.createTask(new Task("Задача","Описание"));
        // m.updateTask(new Task());
         System.out.println("history:"+m.getHistory());
 
        TaskManager n = FileBackedTasksManager.load(new File("src/resources/task.csv"));
-        n.createTask(new Task("Задача","Описание"));
-        n.createTask(new Task("Задача","Описание"));
+       n.createTask(new Task("Задачаnnneww","Описание"));
+       // n.createTask(new Task("Задача","Описание"));
 //        System.out.println(n.getTasks());
 //
 //        n.removeTask(1);
@@ -50,6 +53,7 @@ m.removeEpic(3);
 //        //n.removeTask(2);
 //        System.out.println(n.getTasks());
 //
-       System.out.println(n.getTasks());
+       //System.out.println(n.getTasks());
+
     }
 }

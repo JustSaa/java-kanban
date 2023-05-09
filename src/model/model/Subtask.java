@@ -3,6 +3,8 @@ package model.model;
 import model.enums.Status;
 import model.enums.TaskType;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 public class Subtask extends Task {
@@ -20,6 +22,18 @@ public class Subtask extends Task {
         this.type = TaskType.SUBTASK;
     }
 
+    public Subtask(String title, Status status, String description, int epicId, LocalDateTime startTime, Duration duration) {
+        super(title, status, description, startTime, duration);
+        this.epicId = epicId;
+        this.type = TaskType.SUBTASK;
+    }
+
+    public Subtask(int id, String title, Status status, String description, int epicId, LocalDateTime startTime, Duration duration) {
+        super(id, title, status, description, startTime, duration);
+        this.epicId = epicId;
+        this.type = TaskType.SUBTASK;
+    }
+
     @Override
     public String toString() {
         return this.id + ","
@@ -28,7 +42,8 @@ public class Subtask extends Task {
                 + this.status + ","
                 + this.description + ","
                 + this.epicId + ","
-                + this.type;
+                + this.startTime
+                + this.duration;
     }
 
     public int getEpicId() {
@@ -45,11 +60,14 @@ public class Subtask extends Task {
                 && Objects.equals(this.title, subtask.title)
                 && Objects.equals(this.description, subtask.description)
                 && Objects.equals(this.status, subtask.status)
-                && Objects.equals(this.type, subtask.type));
+                && Objects.equals(this.type, subtask.type)
+                && Objects.equals(this.startTime, subtask.startTime)
+                && Objects.equals(this.duration, subtask.duration));
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(this.epicId, this.id, this.title, this.description, this.status, this.type);
+        return Objects.hash(this.epicId, this.id, this.title,
+                this.description, this.status, this.type, this.startTime, this.duration);
     }
 }
