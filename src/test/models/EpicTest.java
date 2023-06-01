@@ -65,8 +65,6 @@ public class EpicTest {
 
     @Test
     public void testingForEpicSubtasksWithStatusInProgress() {
-        //TaskManager taskManager = Managers.getDefault();
-        //Epic epic = new Epic("Переезд", "Переехать из А в Б");
         taskManager.createEpic(epic);
         Subtask subTask = new Subtask("Собрать ящики", Status.IN_PROGRESS, "Все самое любимое в первую очередь", 1);
         Subtask subTask1 = new Subtask("a", Status.IN_PROGRESS, "b", 1);

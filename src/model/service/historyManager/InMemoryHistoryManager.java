@@ -18,24 +18,41 @@ public class InMemoryHistoryManager implements HistoryManager {
         }
         final int id = task.getId();
 
-        if (historyOfTasks.containsKey(id)) {
-            removeNode(historyOfTasks.get(id));
+        Node<Task> existingNode = historyOfTasks.get(id);
+        if (existingNode != null) {
+            removeNode(existingNode);
+            if (existingNode == last) {
+                last = last.prev;
+            }
         }
+
         linkLast(task);
         historyOfTasks.put(id, last);
     }
+
 
     //Очистка истории
     @Override
     public void clearHistory() {
         historyOfTasks.clear();
+        first = null;
+        last = null;
     }
+
 
     @Override
     public void remove(int id) {
-        removeNode(historyOfTasks.get(id));
-        historyOfTasks.remove(id);
+        Node<Task> node = historyOfTasks.get(id);
+        if (node != null) {
+            removeNode(node);
+            historyOfTasks.remove(id);
+
+            if (last == node) {
+                last = node.prev; // Обновляем last, если удаленный узел является последним
+            }
+        }
     }
+
 
     //Реализация для своего LinkedList
     public void linkLast(Task someTask) {
@@ -59,6 +76,7 @@ public class InMemoryHistoryManager implements HistoryManager {
             history.add(nodeTask.item);
             nodeTask = nodeTask.next;
         }
+
         return history;
     }
 

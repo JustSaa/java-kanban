@@ -6,13 +6,15 @@ import model.service.taskManagers.FileBackedTasksManager;
 import model.service.taskManagers.TaskManager;
 
 import java.io.File;
+import java.time.Duration;
+import java.time.LocalDateTime;
 
 public class Main {
 
     public static void main(String[] args) {
         TaskManager m = new FileBackedTasksManager(new File("src/resources/task.csv"));
 
-        Task task01 = new Task("A", Status.NEW, "First");
+        Task task01 = new Task("A", Status.NEW, "First", LocalDateTime.now(), Duration.ofMinutes(22));
         Task task02 = new Task("B", Status.NEW, "Second");
         Epic epic01 = new Epic("Epic01", Status.NEW, "For test");
         Subtask subtask01 = new Subtask("Subtask01", Status.IN_PROGRESS, "subId01", 3);
@@ -42,8 +44,8 @@ m.removeEpic(3);
        // m.updateTask(new Task());
         System.out.println("history:"+m.getHistory());
 
-       TaskManager n = FileBackedTasksManager.load(new File("src/resources/task.csv"));
-       n.createTask(new Task("Задачаnnneww","Описание"));
+       //TaskManager n = FileBackedTasksManager.load(new File("src/resources/task.csv"));
+       //n.createTask(new Task("Задачаnnneww","Описание"));
        // n.createTask(new Task("Задача","Описание"));
 //        System.out.println(n.getTasks());
 //
@@ -54,6 +56,6 @@ m.removeEpic(3);
 //        System.out.println(n.getTasks());
 //
        //System.out.println(n.getTasks());
-
+        
     }
 }

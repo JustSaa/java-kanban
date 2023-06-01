@@ -8,6 +8,8 @@ import model.model.Task;
 import model.service.taskManagers.InMemoryTaskManager;
 import model.service.historyManager.HistoryManager;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -50,23 +52,39 @@ public class Converter {
 
     //Метод создания задачи из строки
     public static Task fromString(String value) {
-        String[] values = value.split(",");
-        int epicId = 0;
-        int id = Integer.parseInt(values[0]);
-        TaskType type = TaskType.valueOf(values[1]);
-        String title = values[2];
-        Status status = Status.valueOf(values[3]);
-        String description = values[4];
+        try {
+            String[] values = value.split(",");
+            int epicId = 0;
+            int id = Integer.parseInt(values[0]);
+            TaskType type = TaskType.valueOf(values[1]);
+            String title = values[2];
+            Status status = Status.valueOf(values[3]);
+            String description = values[4];
+            if (description.equals("null")) {
+                description = null;
+            }
+            LocalDateTime startTime = null;
+            if (values[5] != null && !values[5].equals("null")) {
+                startTime = LocalDateTime.parse(values[5]);
+            }
+            Duration duration = null;
+            if (values.length > 6 && values[6] != null && !values[6].equals("null")) {
+                duration = Duration.parse(values[6]);
+            }
 
-        if (type.equals(TaskType.TASK)) {
-            return new Task(id, title, status, description);
-        } else if (type.equals(TaskType.EPIC)) {
-            return new Epic(id, title, status, description);
-        } else if (type.equals(TaskType.SUBTASK)) {
-            epicId = Integer.parseInt(values[5]);
-            return new Subtask(id, title, status, description, epicId);
-        } else {
-            throw new IllegalArgumentException("Введенный формат задачи не поддерживается");
+            if (type.equals(TaskType.TASK)) {
+                return new Task(id, title, status, description, startTime, duration);
+            } else if (type.equals(TaskType.EPIC)) {
+                return new Epic(id, title, status, description, startTime, duration);
+            } else if (type.equals(TaskType.SUBTASK)) {
+                epicId = Integer.parseInt(values[5]);
+                return new Subtask(id, title, status, description, epicId, startTime, duration);
+            } else {
+                throw new IllegalArgumentException("Введенный формат задачи не поддерживается");
+            }
+        } catch (ArrayIndexOutOfBoundsException | IllegalArgumentException e) {
+            // Обработка исключений при некорректных значениях или формате строки
+            throw new IllegalArgumentException("Ошибка при парсинге строки задачи: " + value, e);
         }
     }
 }

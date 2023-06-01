@@ -43,17 +43,17 @@ public class Epic extends Task {
         this.type = TaskType.EPIC;
     }
 
-    @Override
-    public Optional<LocalDateTime> getEndTime() {
-        if (endTime == null) {
-            return Optional.empty();
-        } else {
-            return Optional.of(endTime);
+    public LocalDateTime getEndTime() {
+        try {
+            return LocalDateTime.from(startTime).plus(duration);
+        } catch (NullPointerException ex) {
+            throw new RuntimeException("Время начала выполнения задачи не указано");
         }
     }
 
     public void setEndTime(LocalDateTime endTime) {
         this.endTime = endTime;
+
     }
 
     public ArrayList<Integer> getSubtasks() {

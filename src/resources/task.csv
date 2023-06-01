@@ -1,8 +1,7 @@
-id,type,name,status,description,epicId
-1,TASK,A,NEW,First,null,null,
+id,type,name,status,description,epicId,startTime,duration
+1,TASK,A,NEW,First,2023-06-01T21:55:47.997014097,PT22M,
 2,TASK,B,NEW,Second,null,null,
 8,TASK,Задача,NEW,Описание,null,null,
 9,TASK,Задача,NEW,Описание,null,null,
-10,TASK,Задачаnnneww,NEW,Описание,null,null,
-4,EPIC,Epic02,NEW,For test02nullnull,null,null
+4,EPIC,Epic02,NEW,For test02null,null,null
 

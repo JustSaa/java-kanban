@@ -20,9 +20,9 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
 
 
     //Сохранение в файл
-    protected void save() {
+    public void save() {
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(file))) {
-            String header = "id,type,name,status,description,epicId" + "\n";
+            String header = "id,type,name,status,description,epicId,startTime,duration" + "\n";
             String values = Converter.toString(this)
                     + "\n"
                     + Converter.historyToString(historyManager);
