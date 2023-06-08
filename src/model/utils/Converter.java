@@ -10,8 +10,11 @@ import model.service.historyManager.HistoryManager;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+
+import static model.utils.Formatter.formatter;
 
 public class Converter {
 
@@ -56,7 +59,7 @@ public class Converter {
             String[] values = value.split(",");
             int epicId = 0;
             int id = Integer.parseInt(values[0]);
-            TaskType type = TaskType.valueOf(values[1]);
+            String type = values[1];
             String title = values[2];
             Status status = Status.valueOf(values[3]);
             String description = values[4];
@@ -64,20 +67,20 @@ public class Converter {
                 description = null;
             }
             LocalDateTime startTime = null;
-            if (values[5] != null && !values[5].equals("null")) {
-                startTime = LocalDateTime.parse(values[5]);
+            if (values[5] != null && !values[4].equals("null")) {
+                startTime = LocalDateTime.parse(values[5], formatter);
             }
-            Duration duration = null;
+            long duration = 0;
             if (values.length > 6 && values[6] != null && !values[6].equals("null")) {
-                duration = Duration.parse(values[6]);
+                duration = Long.parseLong(values[6]);
             }
 
-            if (type.equals(TaskType.TASK)) {
+            if (type.equals("Task")) {
                 return new Task(id, title, status, description, startTime, duration);
-            } else if (type.equals(TaskType.EPIC)) {
-                return new Epic(id, title, status, description, startTime, duration);
-            } else if (type.equals(TaskType.SUBTASK)) {
-                epicId = Integer.parseInt(values[5]);
+            } else if (type.equals("Epic")) {
+                return new Epic(id, title, status, description);
+            } else if (type.equals("Subtask")) {
+                epicId = Integer.parseInt(values[8]);
                 return new Subtask(id, title, status, description, epicId, startTime, duration);
             } else {
                 throw new IllegalArgumentException("Введенный формат задачи не поддерживается");

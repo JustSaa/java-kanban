@@ -8,28 +8,28 @@ import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.Optional;
 
+import static model.utils.Formatter.formatter;
+
 public class Task {
     protected String title;
     protected String description;
     protected Status status;
     protected int id;
     protected LocalDateTime startTime;
-    protected Duration duration;
-
-    protected TaskType type;
+    protected long duration;
 
     public Task(String title, Status status, String description) {
         this.title = title;
         this.description = description;
         this.status = status;
-        this.type = TaskType.TASK;
+        this.startTime=LocalDateTime.now();
+        this.duration=0;
     }
 
-    public Task(String title, Status status, String description, LocalDateTime startTime, Duration duration) {
+    public Task(String title, Status status, String description, LocalDateTime startTime, long duration) {
         this.title = title;
         this.description = description;
         this.status = status;
-        this.type = TaskType.TASK;
         this.startTime = startTime;
         this.duration = duration;
     }
@@ -39,15 +39,15 @@ public class Task {
         this.title = title;
         this.description = description;
         this.status = status;
-        this.type = TaskType.TASK;
+        this.startTime=LocalDateTime.now();
+        this.duration=0;
     }
 
-    public Task(int id, String title, Status status, String description, LocalDateTime startTime, Duration duration) {
+    public Task(int id, String title, Status status, String description, LocalDateTime startTime, long duration) {
         this.id = id;
         this.title = title;
         this.description = description;
         this.status = status;
-        this.type = TaskType.TASK;
         this.startTime = startTime;
         this.duration = duration;
     }
@@ -56,19 +56,19 @@ public class Task {
         this.title = title;
         this.description = description;
         this.status = Status.NEW;
-        this.type = TaskType.TASK;
+        this.startTime=LocalDateTime.now();
+        this.duration=0;
     }
 
-    public Task(String title, String description, LocalDateTime startTime, Duration duration) {
+    public Task(String title, String description, LocalDateTime startTime, long duration) {
         this.title = title;
         this.description = description;
         this.status = Status.NEW;
-        this.type = TaskType.TASK;
         this.startTime = startTime;
         this.duration = duration;
     }
 
-    public Duration getDuration() {
+    public long getDuration() {
         return duration;
     }
 
@@ -80,16 +80,17 @@ public class Task {
         this.startTime = startTime;
     }
 
-    public void setDuration(Duration duration) {
+    public void setDuration(long duration) {
         this.duration = duration;
     }
 
-    public LocalDateTime getEndTime() {
-        if (getDuration() != null && getStartTime() != null) {
-            return startTime.plusMinutes(duration.toMinutes());
+    public Optional<LocalDateTime> getEndTime() {
+        if (getDuration() != 0 && getStartTime() != null) {
+            return Optional.of(getStartTime().plusMinutes(getDuration()));
         }
-        return null;
+        return Optional.empty();
     }
+
 
     public String getTitle() {
         return this.title;
@@ -103,10 +104,6 @@ public class Task {
         this.status = status;
     }
 
-    public TaskType getType() {
-        return this.type;
-    }
-
     public int getId() {
         return this.id;
     }
@@ -117,13 +114,22 @@ public class Task {
 
     @Override
     public String toString() {
-        return this.id + ","
-                + this.type + ","
-                + this.title + ","
-                + this.status + ","
-                + this.description + ","
-                + this.startTime + ","
-                + this.duration + ",";
+        StringBuilder builder = new StringBuilder();
+        builder.append(this.id).append(",")
+                .append(getClass().getSimpleName()).append(",")
+                .append(this.title).append(",")
+                .append(this.status).append(",")
+                .append(this.description);
+
+        if (startTime != null) {
+            builder.append(",").append(this.startTime.format(formatter))
+                    .append(",").append(this.duration);
+        }
+
+        getEndTime().ifPresent(endTime ->
+                builder.append(",").append(endTime.format(formatter)));
+
+        return builder.toString();
     }
 
     @Override
@@ -135,7 +141,6 @@ public class Task {
                 && Objects.equals(this.title, task.title)
                 && Objects.equals(this.description, task.description)
                 && Objects.equals(this.status, task.status)
-                && Objects.equals(this.type, task.type)
                 && Objects.equals(this.startTime, task.startTime)
                 && Objects.equals(this.duration, task.duration));
     }
@@ -143,6 +148,6 @@ public class Task {
     @Override
     public int hashCode() {
         return Objects.hash(this.id, this.title, this.description,
-                this.status, this.type, this.duration, this.startTime);
+                this.status, getClass(), this.duration, this.startTime);
     }
 }

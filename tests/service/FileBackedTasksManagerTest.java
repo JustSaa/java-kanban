@@ -1,4 +1,4 @@
-package test.service;
+package service;
 
 import model.enums.Status;
 import model.model.Epic;
@@ -16,12 +16,12 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 class FileBackedTasksManagerTest {
-    private static final String TEST_FILE_PATH = "test_tasks.csv";
     private FileBackedTasksManager tasksManager;
+    private File testFile;
 
     @BeforeEach
-    void setUp() {
-        File testFile = new File(TEST_FILE_PATH);
+    void setUp() throws IOException {
+        testFile = File.createTempFile("test", ".csv");
         tasksManager = new FileBackedTasksManager(testFile);
     }
 
@@ -29,16 +29,19 @@ class FileBackedTasksManagerTest {
     void tearDown() {
         try {
             tasksManager.deleteTasks();
-            Files.deleteIfExists(Path.of(TEST_FILE_PATH));
+            if (testFile != null) {
+                Files.deleteIfExists(testFile.toPath());
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
+
     @Test
     void saveAndLoadEmptyTaskListNoExceptions() {
         tasksManager.save(); // Save empty task list to file
-        TaskManager loadedManager = FileBackedTasksManager.load(new File(TEST_FILE_PATH));
+        TaskManager loadedManager = FileBackedTasksManager.load(testFile);
         assertNotNull(loadedManager);
         assertTrue(loadedManager.getTasks().isEmpty());
     }
@@ -48,17 +51,16 @@ class FileBackedTasksManagerTest {
         Epic epic = new Epic("First", Status.NEW, "Description");
         tasksManager.createEpic(epic);
         tasksManager.save(); // Save task list with an epic to file
-        TaskManager loadedManager = FileBackedTasksManager.load(new File(TEST_FILE_PATH));
+        TaskManager loadedManager = FileBackedTasksManager.load(testFile);
         assertNotNull(loadedManager);
         List<Epic> tasks = loadedManager.getEpics();
         assertEquals(1, tasks.size());
     }
 
-
     @Test
     void saveAndLoadEmptyHistoryNoExceptions() {
         tasksManager.save(); // Save empty history to file
-        TaskManager loadedManager = FileBackedTasksManager.load(new File(TEST_FILE_PATH));
+        TaskManager loadedManager = FileBackedTasksManager.load(testFile);
         assertNotNull(loadedManager);
         assertTrue(loadedManager.getHistory().isEmpty());
     }

@@ -1,4 +1,4 @@
-package test.service;
+package service;
 
 import model.service.taskManagers.InMemoryTaskManager;
 import org.junit.jupiter.api.BeforeEach;

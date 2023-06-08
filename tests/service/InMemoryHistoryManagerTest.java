@@ -1,4 +1,4 @@
-package test.service;
+package service;
 
 import model.enums.Status;
 import model.model.Task;
@@ -30,7 +30,7 @@ class InMemoryHistoryManagerTest {
 
     @Test
     void addToHistoryWithValidTaskTaskAddedToHistory() {
-        Task task = new Task("A", Status.NEW, "First", LocalDateTime.now(), Duration.ofMinutes(22));
+        Task task = new Task("A", Status.NEW, "First", LocalDateTime.now(), 22);
         historyManager.addToHistory(task);
 
         List<Task> history = historyManager.getHistory();
@@ -40,10 +40,10 @@ class InMemoryHistoryManagerTest {
 
     @Test
     void addToHistoryWithDuplicateTaskDuplicateTaskReplaced() {
-        Task task = new Task("A", Status.NEW, "First", LocalDateTime.now(), Duration.ofMinutes(22));
+        Task task = new Task("A", Status.NEW, "First", LocalDateTime.now(), 22);
         historyManager.addToHistory(task);
 
-        Task duplicateTask = new Task("A", Status.NEW, "Duplicate", LocalDateTime.now(), Duration.ofMinutes(22));
+        Task duplicateTask = new Task("A", Status.NEW, "Duplicate", LocalDateTime.now(), 22);
         historyManager.addToHistory(duplicateTask);
 
         List<Task> history = historyManager.getHistory();

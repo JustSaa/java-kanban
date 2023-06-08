@@ -1,13 +1,13 @@
 package model.model;
 
 import model.enums.Status;
-import model.enums.TaskType;
 
-import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Objects;
 import java.util.Optional;
+
+import static model.utils.Formatter.formatter;
 
 public class Epic extends Task {
     private ArrayList<Integer> subtasks = new ArrayList<>();
@@ -15,45 +15,19 @@ public class Epic extends Task {
 
     public Epic(String title, Status status, String description) {
         super(title, status, description);
-        this.type = TaskType.EPIC;
     }
 
     public Epic(int id, String title, Status status, String description) {
         super(id, title, status, description);
-        this.type = TaskType.EPIC;
     }
+
 
     public Epic(String title, String description) {
         super(title, description);
-        this.type = TaskType.EPIC;
-    }
-
-    public Epic(String title, Status status, String description, LocalDateTime startTime, Duration duration) {
-        super(title, status, description, startTime, duration);
-        this.type = TaskType.EPIC;
-    }
-
-    public Epic(int id, String title, Status status, String description, LocalDateTime startTime, Duration duration) {
-        super(id, title, status, description, startTime, duration);
-        this.type = TaskType.EPIC;
-    }
-
-    public Epic(String title, String description, LocalDateTime startTime, Duration duration) {
-        super(title, description, startTime, duration);
-        this.type = TaskType.EPIC;
-    }
-
-    public LocalDateTime getEndTime() {
-        try {
-            return LocalDateTime.from(startTime).plus(duration);
-        } catch (NullPointerException ex) {
-            throw new RuntimeException("Время начала выполнения задачи не указано");
-        }
     }
 
     public void setEndTime(LocalDateTime endTime) {
         this.endTime = endTime;
-
     }
 
     public ArrayList<Integer> getSubtasks() {
@@ -82,15 +56,24 @@ public class Epic extends Task {
 
     @Override
     public String toString() {
-        return this.id + ","
-                + this.type + ","
-                + this.title + ","
-                + this.status + ","
-                + this.description
-                + this.startTime + ","
-                + this.duration + ","
-                + this.endTime;
+        StringBuilder builder = new StringBuilder();
+        builder.append(this.id).append(",")
+                .append(getClass().getSimpleName()).append(",")
+                .append(this.title).append(",")
+                .append(this.status).append(",")
+                .append(this.description);
+
+        if (startTime != null) {
+            builder.append(",").append(this.startTime.format(formatter))
+                    .append(",").append(this.duration).append(",");
+        }
+        if (endTime != null) {
+            builder.append(",").append(this.endTime.format(formatter));
+        }
+
+        return builder.toString();
     }
+
 
 
     @Override
@@ -103,7 +86,6 @@ public class Epic extends Task {
                 && Objects.equals(this.title, epic.title)
                 && Objects.equals(this.description, epic.description)
                 && Objects.equals(this.status, epic.status)
-                && Objects.equals(this.type, epic.type)
                 && Objects.equals(this.duration, epic.duration)
                 && Objects.equals(this.startTime, epic.startTime)
                 && Objects.equals(this.endTime, epic.endTime));
@@ -112,7 +94,7 @@ public class Epic extends Task {
     @Override
     public int hashCode() {
         return Objects.hash(this.subtasks, this.id, this.title, this.description,
-                this.status, this.type, this.startTime, this.duration, this.endTime);
+                this.status, getClass(), this.startTime, this.duration, this.endTime);
     }
 
 }

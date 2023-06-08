@@ -1,4 +1,4 @@
-package test.service;
+package service;
 
 import model.enums.Status;
 import model.model.Epic;
@@ -24,11 +24,11 @@ public abstract class TaskManagerTest<T extends TaskManager> {
 
     protected List<Subtask> createSubtasks(Status status1, Status status2, Status status3, int epicId) {
         Subtask subtask1 = new Subtask("subtask1Name", status1, "subtask1Description", epicId,
-                LocalDateTime.of(2021, 1, 1, 10, 0), Duration.ofMinutes(100));
+                LocalDateTime.of(2021, 1, 1, 10, 0), 100);
         Subtask subtask2 = new Subtask("subtask2Name", status2, "subtask2Description", epicId,
-                LocalDateTime.of(2021, 1, 1, 10, 0).plusHours(10), Duration.ofMinutes(10));
+                LocalDateTime.of(2021, 1, 1, 10, 0).plusHours(10), 10);
         Subtask subtask3 = new Subtask("subtask3Name", status3, "subtask3Description", epicId,
-                LocalDateTime.of(2021, 1, 1, 10, 0).minusHours(10), Duration.ofMinutes(50));
+                LocalDateTime.of(2021, 1, 1, 10, 0).minusHours(10), 50);
 
         List<Subtask> subtasks = new ArrayList<>();
 
@@ -310,32 +310,32 @@ public abstract class TaskManagerTest<T extends TaskManager> {
     @Test
     public void timeIntervalCheck() {
         Task taskHasTime = new Task("TaskTime", Status.NEW, "Task has time",
-                LocalDateTime.of(2022, 1, 10, 9, 0), Duration.ofMinutes(60));
+                LocalDateTime.of(2022, 1, 10, 9, 0), 60);
         taskManager.createTask(taskHasTime);
 
         Task taskHasTime2 = new Task("TaskTime", Status.NEW, "Task has time",
-                LocalDateTime.of(2022, 1, 10, 8, 0), Duration.ofMinutes(90));
+                LocalDateTime.of(2022, 1, 10, 8, 0), 90);
 
         RuntimeException ex = assertThrows(
                 RuntimeException.class,
                 () -> taskManager.createTask(taskHasTime2)
         );
-        assertEquals("Это время уже занято. Выберите другое время", ex.getMessage());
+        assertEquals("Пересечение времени выполнения задач", ex.getMessage());
     }
 
     @Test
     public void shouldSortTasks() {
         Task task1 = new Task("TaskTime", Status.NEW, "Task has time",
-                LocalDateTime.of(2022, 1, 10, 10, 0), Duration.ofMinutes(60));
+                LocalDateTime.of(2022, 1, 10, 10, 0), 60);
         taskManager.createTask(task1);
         Epic epic = new Epic("Task1", "Task1_desc");
         taskManager.createEpic(epic);
         int epicId = epic.getId();
         Subtask subtask1 = new Subtask("TaskTimeSub", Status.NEW, "Task has time1", epicId,
-                LocalDateTime.of(2022, 3, 10, 10, 0), Duration.ofMinutes(60));
+                LocalDateTime.of(2022, 3, 10, 10, 0), 60);
         taskManager.createSubtask(subtask1);
         Subtask subtask2 = new Subtask("TaskTime", Status.NEW, "Task has time", epicId,
-                LocalDateTime.of(2022, 2, 10, 10, 0), Duration.ofMinutes(60));
+                LocalDateTime.of(2022, 2, 10, 10, 0), 60);
         taskManager.createSubtask(subtask2);
 
         Set<Task> expectedPrioritizedTasks = Set.of(task1, subtask2, subtask1, epic);
@@ -353,12 +353,12 @@ public abstract class TaskManagerTest<T extends TaskManager> {
         taskManager.createEpic(epic);
         int id = epic.getId();
         subtask = new Subtask("subtask", Status.NEW, "subtaskDescription",
-                id, dateTime, Duration.ofMinutes(10));
+                id, dateTime, 10);
 
         taskManager.createSubtask(subtask);
 
         assertEquals(dateTime, epic.getStartTime());
-        assertEquals(Duration.ofMinutes(10), epic.getDuration());
-        assertEquals(dateTime.plusMinutes(10), epic.getEndTime());
+        assertEquals(10, epic.getDuration());
+        assertEquals(dateTime.plusMinutes(10), epic.getEndTime().get());
     }
 }

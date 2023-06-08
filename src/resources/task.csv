@@ -1,7 +1,11 @@
-id,type,name,status,description,epicId,startTime,duration
-1,TASK,A,NEW,First,2023-06-01T21:55:47.997014097,PT22M,
-2,TASK,B,NEW,Second,null,null,
-8,TASK,Задача,NEW,Описание,null,null,
-9,TASK,Задача,NEW,Описание,null,null,
-4,EPIC,Epic02,NEW,For test02null,null,null
+id,type,name,status,description,startTime,duration,endTime,epicId
+1,Task,A,NEW,First,01.06.2023;01:01,22,01.06.2023;01:23
+2,Task,B,NEW,Second,01.08.2023;01:01,22,01.08.2023;01:23
+8,Epic,Epic Task,NEW,Описание,08.06.2023;22:23,0,
+3,Epic,Epic01,IN_PROGRESS,For test,01.12.2000;01:01,62,,01.07.2023;01:23
+4,Epic,Epic02,NEW,For test02,08.06.2023;22:23,0,
+5,Subtask,Subtask01,IN_PROGRESS,subId01,01.07.2023;01:01,22,01.07.2023;01:23,3
+6,Subtask,Subtask02,DONE,subId02,01.12.2022;01:01,20,01.12.2022;01:21,3
+7,Subtask,Subtask03,DONE,subId02,01.12.2000;01:01,20,01.12.2000;01:21,3
 
+7,1,2,5,6,3,

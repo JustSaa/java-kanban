@@ -11,6 +11,9 @@ import java.io.*;
 import java.nio.file.Files;
 import java.util.*;
 
+import static model.enums.TaskType.EPIC;
+import static model.enums.TaskType.SUBTASK;
+
 public class FileBackedTasksManager extends InMemoryTaskManager {
     private final File file;
 
@@ -22,7 +25,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
     //Сохранение в файл
     public void save() {
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(file))) {
-            String header = "id,type,name,status,description,epicId,startTime,duration" + "\n";
+            String header = "id,type,name,status,description,startTime,duration,endTime,epicId" + "\n";
             String values = Converter.toString(this)
                     + "\n"
                     + Converter.historyToString(historyManager);
@@ -52,23 +55,23 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
                 }
                 if (!itsDelimiter) {
                     Task task = Converter.fromString(lines[i]);
-                    TaskType type = TaskType.valueOf(lines[i].split(",")[1]);
+                    String type = lines[i].split(",")[1];
                     //Получение самого большого id
                     if (task.getId()>initId) {
                         initId=task.getId();
                     }
 
                     switch (type) {
-                        case TASK -> {
+                        case "Task" -> {
                             fileBackedTasksManager.tasksMap.put(task.getId(), task);
                             mapForHistory.put(task.getId(), task);
                         }
-                        case EPIC -> {
+                        case "Epic" -> {
                             Epic epic = (Epic) task;
                             fileBackedTasksManager.epicsMap.put(task.getId(), epic);
                             mapForHistory.put(epic.getId(), epic);
                         }
-                        case SUBTASK -> {
+                        case "Subtask" -> {
                             Subtask subtask = (Subtask) task;
                             fileBackedTasksManager.subtasksMap.put(task.getId(), subtask);
                             mapForHistory.put(subtask.getId(), subtask);
@@ -78,8 +81,8 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
                     history = Converter.historyFromString(lines[i]);
                     for (Integer id : history) {
                         Task task = mapForHistory.get(id);
-                        switch (task.getType()) {
-                            case TASK, SUBTASK, EPIC -> fileBackedTasksManager.historyManager
+                        if (task.getClass().equals(Task.class) || task.getClass().equals(Subtask.class) || task.getClass().equals(Epic.class)) {
+                            fileBackedTasksManager.historyManager
                                     .addToHistory(task);
                         }
                     }

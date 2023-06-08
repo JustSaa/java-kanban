@@ -1,4 +1,4 @@
-package test.models;
+package models;
 
 import model.enums.Status;
 import model.model.Epic;
