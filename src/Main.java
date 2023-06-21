@@ -1,66 +1,46 @@
+
+import java.io.IOException;
+import java.time.LocalDateTime;
+
 import model.enums.Status;
 import model.model.Epic;
 import model.model.Subtask;
 import model.model.Task;
-import model.service.taskManagers.FileBackedTasksManager;
-import model.service.taskManagers.InMemoryTaskManager;
+import model.servers.KVServer;
+import model.service.Managers;
+import model.service.taskManagers.HttpTasksManager;
 import model.service.taskManagers.TaskManager;
-
-import java.io.File;
-import java.time.Duration;
-import java.time.LocalDateTime;
 
 public class Main {
 
-    public static void main(String[] args) {
-        //TaskManager m= new InMemoryTaskManager();
-        TaskManager m = new FileBackedTasksManager(new File("src/resources/task.csv"));
+    public static void main(String[] args) throws IOException {
 
-        Task task01 = new Task("A", Status.NEW, "First", LocalDateTime.of(2023, 6, 1, 1, 1), 22);
-        Task task02 = new Task("B", Status.NEW, "Second",LocalDateTime.of(2023, 8, 1, 1, 1), 22);
-        Epic epic01 = new Epic("Epic01", Status.NEW, "For test");
-        Subtask subtask01 = new Subtask("Subtask01", Status.IN_PROGRESS, "subId01", 3, LocalDateTime.of(2023, 7, 1, 1, 1), 22);
-        Subtask subtask02 = new Subtask("Subtask02", Status.DONE, "subId02", 3, LocalDateTime.of(2022, 12, 1, 1, 1), 20);
-        Subtask subtask03 = new Subtask("Subtask03", Status.DONE, "subId02", 3, LocalDateTime.of(2000, 12, 1, 1, 1), 20);
-        Epic epic02 = new Epic("Epic02", Status.NEW, "For test02");
-        m.createTask(task01);
-        m.createTask(task02);
-        m.createEpic(epic01);
-        m.createEpic(epic02);
-        m.createSubtask(subtask01);
-        m.createSubtask(subtask02);
-        m.createSubtask(subtask03);
-        System.out.println(m.getTask(1).getEndTime());
-        m.getTask(2);
-        m.getEpic(3);
-       m.getSubtask(5);
-        m.getSubtask(6);
+        new KVServer().start();
 
-        m.createTask(new Epic("Epic Task","Описание"));
+        TaskManager httpManager = Managers.getDefaultManager();
 
-//m.removeEpic(3);
-        //m.deleteEpics();
-        //m.deleteTasks();
-        //m.deleteSubtasks();
-       // m.updateTask(new Task());
-        System.out.println("history:"+m.getHistory());
+        Task task1 = new Task("Task1", "Task1D", LocalDateTime.of(2023, 5, 1, 1, 1), 22);
+        httpManager.createTask(task1);
+        Task task2 = new Task("Task1", "Task1D", LocalDateTime.of(2023, 6, 1, 1, 1), 22);
+        httpManager.createTask(task2);
 
-       TaskManager n = FileBackedTasksManager.load(new File("src/resources/task.csv"));
-       n.createTask(new Task("Задачаnnneww","Описание"));
-       // n.createTask(new Task("Задача","Описание"));
-//        System.out.println(n.getTasks());
-//
-//        n.removeTask(1);
-       System.out.println(n.getTasks());
-//
-        n.removeTask(2);
-System.out.println(n.getTasks());
-//
-       System.out.println(m.getTasks());
-        //System.out.println(m.getEpics());
-        System.out.println();
-        System.out.println(m.getEpic(3));
-        //System.out.println(m.getSubtasks());
-        
+        Epic epic1 = new Epic("Epic1", "Epic1D");
+        httpManager.createEpic(epic1);
+
+        Subtask subtask1=new Subtask("Subtask01", Status.IN_PROGRESS, "subId01", epic1.getId(),  LocalDateTime.of(2023, 7, 1, 1, 1), 22);
+        httpManager.createSubtask(subtask1);
+
+        Subtask subtask2=new Subtask("Subtask02", Status.IN_PROGRESS, "subId02", epic1.getId(),  LocalDateTime.of(2022, 12, 1, 1, 1), 22);
+        httpManager.createSubtask(subtask2);
+
+        httpManager.getTask(task1.getId());
+        httpManager.getEpic(epic1.getId());
+        httpManager.getSubtask(subtask1.getId());
+        httpManager.getSubtask(subtask2.getId());
+        httpManager.getHistory();
+
+        HttpTasksManager refreshedHttpManager = new HttpTasksManager();
+        refreshedHttpManager.load();
+        refreshedHttpManager.getPrioritizedTasks();
     }
 }

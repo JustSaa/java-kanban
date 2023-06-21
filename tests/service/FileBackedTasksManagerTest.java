@@ -48,7 +48,7 @@ class FileBackedTasksManagerTest {
 
     @Test
     void saveAndLoadEpicWithoutSubtasksNoExceptions() {
-        Epic epic = new Epic("First", Status.NEW, "Description");
+        Epic epic = new Epic("First", "Description");
         tasksManager.createEpic(epic);
         tasksManager.save(); // Save task list with an epic to file
         TaskManager loadedManager = FileBackedTasksManager.load(testFile);

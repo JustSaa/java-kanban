@@ -1,16 +1,16 @@
 package model.utils;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import model.enums.Status;
-import model.enums.TaskType;
 import model.model.Epic;
 import model.model.Subtask;
 import model.model.Task;
 import model.service.taskManagers.InMemoryTaskManager;
 import model.service.historyManager.HistoryManager;
 
-import java.time.Duration;
+import java.time.Instant;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,7 +36,6 @@ public class Converter {
         for (String line : value.split(","))
             history.add(Integer.parseInt(line));
         return history;
-
     }
 
     //Сохранения задачи в строку
@@ -89,5 +88,14 @@ public class Converter {
             // Обработка исключений при некорректных значениях или формате строки
             throw new IllegalArgumentException("Ошибка при парсинге строки задачи: " + value, e);
         }
+
+
+    }
+
+    // преобразование в GSON
+    public static Gson createGson() {
+        return new GsonBuilder()
+                .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeAdapter())
+                .create();
     }
 }

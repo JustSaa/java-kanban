@@ -3,10 +3,12 @@ package model.service;
 import model.service.historyManager.HistoryManager;
 import model.service.historyManager.InMemoryHistoryManager;
 import model.service.taskManagers.FileBackedTasksManager;
+import model.service.taskManagers.HttpTasksManager;
 import model.service.taskManagers.InMemoryTaskManager;
 import model.service.taskManagers.TaskManager;
 
 import java.io.File;
+
 
 public class Managers {
     public static HistoryManager getDefaultHistory() {
@@ -20,4 +22,9 @@ public class Managers {
     public static TaskManager getDefaultFileBackedManager() {
         return new FileBackedTasksManager(new File("resources/task.csv"));
     }
+
+    public static TaskManager getDefaultManager() {
+        return new HttpTasksManager();
+    }
+
 }

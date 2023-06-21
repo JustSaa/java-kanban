@@ -163,7 +163,7 @@ public class InMemoryTaskManager implements TaskManager {
     //Получение всех подзадач по идентификатору эпика
     @Override
     public List<Subtask> getEpicSubtasks(int id) {
-        ArrayList<Integer> epicSubsId = epicsMap.get(id).getSubtasks();
+        List<Integer> epicSubsId = epicsMap.get(id).getSubtasks();
         List<Subtask> epicSubs = new ArrayList<>();
 
         if (epicSubsId == null) {
@@ -213,7 +213,7 @@ public class InMemoryTaskManager implements TaskManager {
                 subtasksMap.put(subtask.getId(), updateSubtask);
                 //Обновление статуса Epic
                 setEpicStatus(epicsMap.get(updateSubtask.getEpicId()));
-                //Should update check interval
+                //Обновление времени для Epic
                 checkTheTaskCompletionTime(updateSubtask);
                 startTimeForEpic(updateSubtask.getEpicId());
                 sumOfDuration(updateSubtask.getEpicId());
@@ -239,7 +239,7 @@ public class InMemoryTaskManager implements TaskManager {
     public void removeEpic(int id) {
         if (epicsMap.get(id) != null) {
             Epic epicToRemove = epicsMap.get(id);
-            ArrayList<Integer> epicSubtasks = epicToRemove.getSubtasks();
+            List<Integer> epicSubtasks = epicToRemove.getSubtasks();
             sortedTasks.remove(epicsMap.get(id));
             for (int idSub : epicSubtasks) {
                 sortedTasks.remove(subtasksMap.get(idSub));

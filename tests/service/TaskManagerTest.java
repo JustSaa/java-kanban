@@ -40,8 +40,8 @@ public abstract class TaskManagerTest<T extends TaskManager> {
 
     @BeforeEach
     public void beforeEach() {
-        epic = new Epic("EpicBeforeEach", Status.NEW, "epicDescription");
-        task = new Task("TaskBeforeEach", Status.NEW, "taskDescription");
+        epic = new Epic("EpicBeforeEach", "epicDescription");
+        task = new Task("TaskBeforeEach", "taskDescription");
     }
 
     @Test
@@ -188,7 +188,7 @@ public abstract class TaskManagerTest<T extends TaskManager> {
     @Test
     public void shouldDeleteTaskById() {
         taskManager.createEpic(epic);
-        Epic epic1 = new Epic("2", Status.NEW, "2");
+        Epic epic1 = new Epic("2", "2");
         taskManager.createEpic(epic1);
         taskManager.createTask(task);
         Task task1 = new Task("1", Status.NEW, "2");
@@ -267,7 +267,7 @@ public abstract class TaskManagerTest<T extends TaskManager> {
         taskManager.deleteEpics();
         taskManager.deleteSubtasks();
 
-        Epic updateEpic = new Epic("EpicName", Status.NEW, "desc");
+        Epic updateEpic = new Epic("EpicName", "desc");
         taskManager.createEpic(updateEpic);
         int epicId = updateEpic.getEpicId();
         Subtask updateSubtask = new Subtask("SubtaskName", Status.NEW, "desc", epicId);

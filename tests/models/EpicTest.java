@@ -17,7 +17,7 @@ public class EpicTest {
 
     @BeforeEach
     public void beforeEach() {
-        epic = new Epic("epicName", Status.NEW, "epicDescription");
+        epic = new Epic("epicName", "epicDescription");
         taskManager = new InMemoryTaskManager();
     }
     @Test

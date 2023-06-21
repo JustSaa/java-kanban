@@ -17,6 +17,8 @@ import static model.enums.TaskType.SUBTASK;
 public class FileBackedTasksManager extends InMemoryTaskManager {
     private final File file;
 
+    private static final String HEADER = "id,type,name,status,description,startTime,duration,endTime,epicId" + "\n";
+
     public FileBackedTasksManager(File file) {
         this.file = file;
     }
@@ -25,12 +27,11 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
     //Сохранение в файл
     public void save() {
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(file))) {
-            String header = "id,type,name,status,description,startTime,duration,endTime,epicId" + "\n";
             String values = Converter.toString(this)
                     + "\n"
                     + Converter.historyToString(historyManager);
 
-            bw.write(header);
+            bw.write(HEADER);
             bw.write(values);
         } catch (IOException e) {
             throw new ManagerSaveException("Ошибка записи в файл");
@@ -43,7 +44,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
         boolean itsDelimiter = false;
         List<Integer> history;
         Map<Integer, Task> mapForHistory = new HashMap<>();
-        int initId=0;
+        int initId = 0;
         try {
             String fileName = Files.readString(file.toPath());
             String[] lines = fileName.split("\n");
@@ -57,8 +58,8 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
                     Task task = Converter.fromString(lines[i]);
                     String type = lines[i].split(",")[1];
                     //Получение самого большого id
-                    if (task.getId()>initId) {
-                        initId=task.getId();
+                    if (task.getId() > initId) {
+                        initId = task.getId();
                     }
 
                     switch (type) {
@@ -88,7 +89,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
                     }
                 }
             }
-            taskId=++initId;
+            taskId = ++initId;
         } catch (IOException e) {
             throw new ManagerSaveException("Ошибка загрузки из файла");
         }
