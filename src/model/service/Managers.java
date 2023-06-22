@@ -15,7 +15,7 @@ public class Managers {
         return new InMemoryHistoryManager();
     }
 
-    public static TaskManager getDefault() {
+    public static TaskManager getDefaultManager() {
         return new InMemoryTaskManager();
     }
 
@@ -23,7 +23,7 @@ public class Managers {
         return new FileBackedTasksManager(new File("resources/task.csv"));
     }
 
-    public static TaskManager getDefaultManager() {
+    public static TaskManager getDefault() {
         return new HttpTasksManager();
     }
 

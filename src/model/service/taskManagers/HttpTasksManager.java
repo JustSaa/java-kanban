@@ -9,9 +9,7 @@ import model.model.Epic;
 import model.model.Task;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 public class HttpTasksManager extends FileBackedTasksManager {
     protected KVTaskClient client;
@@ -42,38 +40,38 @@ public class HttpTasksManager extends FileBackedTasksManager {
         TypeToken<List<Task>> historyType = new TypeToken<List<Task>>() {
         };
 
-        TypeToken<ArrayList<Task>> taskType = new TypeToken<ArrayList<Task>>() {
+        TypeToken<List<Task>> taskType = new TypeToken<List<Task>>() {
         };
 
-        TypeToken<ArrayList<Epic>> epicType = new TypeToken<ArrayList<Epic>>() {
+        TypeToken<List<Epic>> epicType = new TypeToken<List<Epic>>() {
         };
 
-        TypeToken<ArrayList<Subtask>> subtaskType = new TypeToken<ArrayList<Subtask>>() {
+        TypeToken<List<Subtask>> subtaskType = new TypeToken<List<Subtask>>() {
         };
 
-        List<Task> prioritizedTasks = gson.fromJson(getClient().load("tasks"), prioritizedTaskType.getType());
+        List<Task> prioritizedTasks = loadElements("tasks", prioritizedTaskType);
         getPrioritizedTasks().addAll(prioritizedTasks);
 
-        List<Task> history = gson.fromJson(getClient().load("tasks/history"), historyType.getType());
+        List<Task> history = loadElements("tasks/history", historyType);
         getHistory().addAll(history);
 
-
-        String tasksFromJson = getClient().load("tasks/task");
-        List<Task> tasks = gson.fromJson(tasksFromJson, taskType.getType());
+        List<Task> tasks = loadElements("tasks/task", taskType);
         for (Task t : tasks) {
             tasksMap.put(t.getId(), t);
         }
 
-        String epicsFromJson = getClient().load("tasks/epic");
-        List<Epic> epics = gson.fromJson(epicsFromJson, epicType.getType());
+        List<Epic> epics = loadElements("tasks/epic", epicType);
         for (Epic e : epics) {
             epicsMap.put(e.getId(), e);
         }
 
-        String subtaskFromJson = getClient().load("tasks/subtask");
-        List<Subtask> subtask = gson.fromJson(subtaskFromJson, subtaskType.getType());
+        List<Subtask> subtask = loadElements("tasks/subtask", subtaskType);
         for (Subtask s : subtask) {
             subtasksMap.put(s.getId(), s);
         }
+    }
+    private <T> List<T> loadElements(String key, TypeToken<List<T>> typeToken) {
+        String json = getClient().load(key);
+        return gson.fromJson(json, typeToken.getType());
     }
 }

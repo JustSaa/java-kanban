@@ -17,7 +17,7 @@ public class Main {
 
         new KVServer().start();
 
-        TaskManager httpManager = Managers.getDefaultManager();
+        TaskManager httpManager = Managers.getDefault();
 
         Task task1 = new Task("Task1", "Task1D", LocalDateTime.of(2023, 5, 1, 1, 1), 22);
         httpManager.createTask(task1);
